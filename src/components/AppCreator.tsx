@@ -1,13 +1,31 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from "@/components/ui/use-toast";
+import { Textarea } from "@/components/ui/textarea";
 
 const AppCreator = () => {
   const [prompt, setPrompt] = useState('');
+  const [code, setCode] = useState(`// Modifiez ce code pour voir les changements en temps réel
+import React from 'react';
+
+const App = () => {
+  return (
+    <div className="p-4 bg-white rounded-lg shadow">
+      <h1 className="text-xl font-bold mb-2">Mon Application</h1>
+      <p>Bienvenue dans mon application générée!</p>
+      <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
+        Cliquez-moi
+      </button>
+    </div>
+  );
+};
+
+export default App;`);
   const [isLoading, setIsLoading] = useState(false);
   const [generatedPreview, setGeneratedPreview] = useState<string | null>(null);
 
+  // Fonction pour générer un aperçu basé sur le prompt et le code
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!prompt.trim()) {
@@ -23,13 +41,14 @@ const AppCreator = () => {
     
     // Simuler la génération d'application avec un délai
     setTimeout(() => {
+      // Générer un aperçu en utilisant un placeholder d'image
       setGeneratedPreview(`https://placekitten.com/1024/768?t=${Date.now()}`);
       setIsLoading(false);
       toast({
         title: "Application générée",
         description: "Votre application a été créée avec succès!",
       });
-    }, 3000);
+    }, 2000);
   };
 
   return (
@@ -48,49 +67,76 @@ const AppCreator = () => {
             </p>
           </div>
 
-          <div className="bg-white/50 border border-border p-6 md:p-8 rounded-xl shadow-sm">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="app-prompt" className="block font-medium">
-                  Décrivez votre application
-                </label>
-                <textarea
-                  id="app-prompt"
-                  className="w-full h-32 px-4 py-3 rounded-md border border-input bg-transparent focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
-                  placeholder="Ex: Une application de gestion de tâches avec un design minimaliste, des fonctionnalités de rappel et un thème sombre..."
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                />
-              </div>
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center h-12 px-8 font-medium tracking-wide text-white bg-primary rounded-md transition-colors duration-200 hover:bg-primary/90 focus:outline-none disabled:opacity-70"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Génération en cours...
-                    </>
-                  ) : (
-                    "Générer l'application"
-                  )}
-                </button>
-              </div>
-            </form>
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div className="bg-white/50 border border-border p-6 md:p-8 rounded-xl shadow-sm">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <label htmlFor="app-prompt" className="block font-medium">
+                    Décrivez votre application
+                  </label>
+                  <Textarea
+                    id="app-prompt"
+                    className="w-full h-32 px-4 py-3 rounded-md border border-input bg-transparent focus:outline-none focus:ring-2 focus:ring-primary/20 transition"
+                    placeholder="Ex: Une application de gestion de tâches avec un design minimaliste, des fonctionnalités de rappel et un thème sombre..."
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                  />
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center h-12 px-8 font-medium tracking-wide text-white bg-primary rounded-md transition-colors duration-200 hover:bg-primary/90 focus:outline-none disabled:opacity-70"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Génération en cours...
+                      </>
+                    ) : (
+                      "Générer l'application"
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
 
-            {generatedPreview && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="mt-8"
-              >
-                <h3 className="text-xl font-medium mb-4">Aperçu de votre application</h3>
+            <div className="flex flex-col">
+              <div className="bg-black/90 rounded-xl overflow-hidden shadow-lg">
+                <div className="flex items-center bg-black/80 px-4 py-2 border-b border-white/10">
+                  <div className="flex space-x-2 mr-4">
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  </div>
+                  <div className="text-white/70 text-sm font-mono">
+                    App.tsx
+                  </div>
+                </div>
+                <div className="p-4">
+                  <textarea
+                    className="w-full h-[300px] bg-transparent text-white/90 font-mono text-sm resize-none focus:outline-none"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    spellCheck="false"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {generatedPreview && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mt-8"
+            >
+              <h3 className="text-xl font-medium mb-4">Aperçu de votre application</h3>
+              <div className="grid md:grid-cols-2 gap-8">
                 <div className="aspect-[16/9] relative overflow-hidden rounded-lg border border-border shadow-md">
                   <img
                     src={generatedPreview}
@@ -117,9 +163,22 @@ const AppCreator = () => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            )}
-          </div>
+                
+                <div className="bg-white p-6 rounded-lg border border-border shadow-sm">
+                  <h3 className="font-medium mb-2">Rendu du code</h3>
+                  <div className="p-4 bg-white rounded-lg shadow border border-border">
+                    <div className="p-4 bg-white rounded-lg shadow">
+                      <h1 className="text-xl font-bold mb-2">Mon Application</h1>
+                      <p>Bienvenue dans mon application générée!</p>
+                      <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
+                        Cliquez-moi
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
         </div>
       </div>
     </section>

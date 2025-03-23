@@ -19,7 +19,7 @@ const App = () => (
       <BrowserRouter>
         <AnimatePresence mode="wait">
           <Routes>
-            <Route path="/" element={<Navigate to="/workspace" replace />} />
+            <Route path="/" element={<Navigate to="/home" replace />} />
             <Route path="/home" element={<Index />} />
             <Route path="/workspace" element={<Workspace />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
