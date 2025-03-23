@@ -78,13 +78,15 @@ const Navbar = () => {
           >
             <nav className="flex flex-col space-y-6 pt-8">
               {navItems.map((item, index) => (
-                <motion.div key={item.label}>
+                <motion.div 
+                  key={item.label}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + index * 0.1 }}
+                >
                   <Link  
                     to={item.path}
                     className="text-2xl font-medium hover:text-black/70 transition-colors duration-200"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 + index * 0.1 }}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.label}
