@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -15,6 +16,14 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navItems = [
+    { label: 'Workspace', path: '/workspace' },
+    { label: 'Accueil', path: '/home' },
+    { label: 'À propos', path: '/home#a-propos' },
+    { label: 'Caractéristiques', path: '/home#caracteristiques' },
+    { label: 'Contact', path: '/home#contact' }
+  ];
+
   return (
     <>
       <header 
@@ -24,22 +33,22 @@ const Navbar = () => {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
-            <a 
-              href="#" 
+            <Link 
+              to="/workspace" 
               className="text-2xl font-serif font-medium tracking-tight"
             >
               Bach
-            </a>
+            </Link>
             
             <nav className="hidden md:flex items-center space-x-8">
-              {['Accueil', 'À propos', 'Caractéristiques', 'Contact'].map((item) => (
-                <a 
-                  key={item}
-                  href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+              {navItems.map((item) => (
+                <Link 
+                  key={item.label}
+                  to={item.path}
                   className="text-sm font-medium hover:text-black/70 transition-colors duration-200 link-hover"
                 >
-                  {item}
-                </a>
+                  {item.label}
+                </Link>
               ))}
             </nav>
             
@@ -68,18 +77,19 @@ const Navbar = () => {
             transition={{ duration: 0.3 }}
           >
             <nav className="flex flex-col space-y-6 pt-8">
-              {['Accueil', 'À propos', 'Caractéristiques', 'Contact'].map((item, index) => (
-                <motion.a 
-                  key={item}
-                  href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="text-2xl font-medium hover:text-black/70 transition-colors duration-200"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + index * 0.1 }}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item}
-                </motion.a>
+              {navItems.map((item, index) => (
+                <motion.div key={item.label}>
+                  <Link  
+                    to={item.path}
+                    className="text-2xl font-medium hover:text-black/70 transition-colors duration-200"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + index * 0.1 }}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
               ))}
             </nav>
           </motion.div>
