@@ -1,13 +1,32 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useEffect } from 'react';
+import Layout from '@/components/Layout';
+import Hero from '@/components/Hero';
+import About from '@/components/About';
+import Features from '@/components/Features';
+import Contact from '@/components/Contact';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Index = () => {
+  useEffect(() => {
+    document.title = 'Bach - Minimalisme & Élégance';
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <Layout>
+          <Hero />
+          <About />
+          <Features />
+          <Contact />
+        </Layout>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
