@@ -25,10 +25,10 @@ const Index = () => {
       >
         <Layout>
           <Hero />
-          <About />
           <AppCreator />
-          <TextEditor />
+          <About />
           <Features />
+          <TextEditor />
           <GitHubIntegration />
           <BackendSupport />
           <Contact />
