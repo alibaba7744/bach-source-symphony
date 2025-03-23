@@ -5,6 +5,10 @@ import Hero from '@/components/Hero';
 import About from '@/components/About';
 import Features from '@/components/Features';
 import Contact from '@/components/Contact';
+import AppCreator from '@/components/AppCreator';
+import TextEditor from '@/components/TextEditor';
+import GitHubIntegration from '@/components/GitHubIntegration';
+import BackendSupport from '@/components/BackendSupport';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Index = () => {
@@ -22,7 +26,11 @@ const Index = () => {
         <Layout>
           <Hero />
           <About />
+          <AppCreator />
+          <TextEditor />
           <Features />
+          <GitHubIntegration />
+          <BackendSupport />
           <Contact />
         </Layout>
       </motion.div>
