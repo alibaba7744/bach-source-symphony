@@ -50,7 +50,7 @@ const AppCreator = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-8">
             <div className="bg-white/50 border border-border p-6 md:p-8 rounded-xl shadow-sm">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
@@ -87,25 +87,83 @@ const AppCreator = () => {
               </form>
             </div>
 
-            <div className="flex flex-col">
-              <div className="bg-black/90 rounded-xl overflow-hidden shadow-lg h-full">
-                <div className="flex items-center bg-black/80 px-4 py-2 border-b border-white/10">
-                  <div className="flex space-x-2 mr-4">
-                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  </div>
-                  <div className="text-white/70 text-sm font-mono">
-                    Code Généré
+            {generatedCode && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="grid md:grid-cols-2 gap-8"
+              >
+                <div className="flex flex-col">
+                  <div className="bg-black/90 rounded-xl overflow-hidden shadow-lg h-full">
+                    <div className="flex items-center bg-black/80 px-4 py-2 border-b border-white/10">
+                      <div className="flex space-x-2 mr-4">
+                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                      </div>
+                      <div className="text-white/70 text-sm font-mono">
+                        Code Généré
+                      </div>
+                    </div>
+                    <div className="p-4 overflow-auto h-[500px]">
+                      <pre className="text-white/90 font-mono text-sm whitespace-pre-wrap">
+                        {generatedCode}
+                      </pre>
+                    </div>
                   </div>
                 </div>
-                <div className="p-4 overflow-auto h-[400px]">
-                  <pre className="text-white/90 font-mono text-sm whitespace-pre-wrap">
-                    {generatedCode || "// Le code généré apparaîtra ici..."}
-                  </pre>
+
+                <div className="flex flex-col">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-border h-full">
+                    <div className="flex items-center bg-secondary px-4 py-2 border-b border-border">
+                      <div className="text-muted-foreground text-sm font-medium">
+                        Aperçu de l'application
+                      </div>
+                    </div>
+                    <div className="p-8 h-[500px] overflow-auto bg-gradient-to-br from-gray-50 to-gray-100">
+                      <div className="bg-white rounded-lg shadow-sm p-6 min-h-full">
+                        <p className="text-gray-500 text-sm mb-4">Rendu du composant généré :</p>
+                        <div className="border-2 border-dashed border-gray-200 rounded-lg p-4 bg-white">
+                          <iframe
+                            srcDoc={`
+                              <!DOCTYPE html>
+                              <html>
+                              <head>
+                                <script src="https://cdn.tailwindcss.com"></script>
+                                <style>
+                                  body { margin: 0; padding: 20px; font-family: system-ui, -apple-system, sans-serif; }
+                                </style>
+                              </head>
+                              <body>
+                                <div id="root"></div>
+                                <script type="module">
+                                  import React from 'https://esm.sh/react@18.2.0';
+                                  import ReactDOM from 'https://esm.sh/react-dom@18.2.0/client';
+                                  
+                                  try {
+                                    ${generatedCode.replace('export default', 'const Component =')}
+                                    
+                                    const root = ReactDOM.createRoot(document.getElementById('root'));
+                                    root.render(React.createElement(Component));
+                                  } catch (error) {
+                                    document.getElementById('root').innerHTML = '<div style="color: red; padding: 20px; border: 2px solid red; border-radius: 8px;"><strong>Erreur:</strong> ' + error.message + '</div>';
+                                  }
+                                </script>
+                              </body>
+                              </html>
+                            `}
+                            className="w-full h-[400px] border-0 rounded"
+                            sandbox="allow-scripts"
+                            title="Preview"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>
