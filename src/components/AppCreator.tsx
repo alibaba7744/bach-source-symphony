@@ -118,56 +118,41 @@ const AppCreator = () => {
                   <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-border h-full">
                     <div className="flex items-center bg-secondary px-4 py-2 border-b border-border">
                       <div className="text-muted-foreground text-sm font-medium">
-                        Instructions d'utilisation
+                        Aperçu visuel
                       </div>
                     </div>
-                    <div className="p-8 h-[500px] overflow-auto">
-                      <div className="space-y-4">
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                          <h3 className="font-semibold text-blue-900 mb-2">✨ Code généré avec succès!</h3>
-                          <p className="text-blue-800 text-sm">
-                            Votre composant React a été créé. Voici comment l'utiliser:
-                          </p>
-                        </div>
-                        
-                        <div className="space-y-3">
-                          <div className="bg-white border border-border rounded-lg p-4">
-                            <div className="flex items-start">
-                              <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mr-3">1</span>
-                              <div>
-                                <h4 className="font-medium mb-1">Copier le code</h4>
-                                <p className="text-sm text-muted-foreground">Copiez le code généré depuis le panneau de gauche</p>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="bg-white border border-border rounded-lg p-4">
-                            <div className="flex items-start">
-                              <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mr-3">2</span>
-                              <div>
-                                <h4 className="font-medium mb-1">Créer un fichier</h4>
-                                <p className="text-sm text-muted-foreground">Créez un nouveau fichier .tsx dans votre projet React</p>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="bg-white border border-border rounded-lg p-4">
-                            <div className="flex items-start">
-                              <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mr-3">3</span>
-                              <div>
-                                <h4 className="font-medium mb-1">Importer le composant</h4>
-                                <p className="text-sm text-muted-foreground">Importez et utilisez votre nouveau composant dans votre application</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
-                          <p className="text-green-800 text-sm">
-                            💡 <strong>Astuce:</strong> Le code est prêt à l'emploi avec Tailwind CSS pour le styling
-                          </p>
-                        </div>
-                      </div>
+                    <div className="p-4 h-[500px] overflow-auto bg-gray-50">
+                      <iframe
+                        srcDoc={`
+                          <!DOCTYPE html>
+                          <html>
+                          <head>
+                            <script src="https://cdn.tailwindcss.com"></script>
+                            <style>
+                              body { margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+                            </style>
+                          </head>
+                          <body>
+                            <div id="root"></div>
+                            <script type="module">
+                              import React from 'https://esm.sh/react@18.2.0';
+                              import ReactDOM from 'https://esm.sh/react-dom@18.2.0/client';
+                              
+                              try {
+                                ${generatedCode.replace('export default', 'const Component =')}
+                                const root = ReactDOM.createRoot(document.getElementById('root'));
+                                root.render(React.createElement(Component));
+                              } catch (error) {
+                                document.getElementById('root').innerHTML = '<div style="color: red; padding: 20px;"><strong>Erreur:</strong> ' + error.message + '</div>';
+                              }
+                            </script>
+                          </body>
+                          </html>
+                        `}
+                        className="w-full h-full border border-border rounded bg-white"
+                        sandbox="allow-scripts"
+                        title="Preview"
+                      />
                     </div>
                   </div>
                 </div>
