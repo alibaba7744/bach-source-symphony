@@ -22,9 +22,17 @@ const AppCreator = () => {
     try {
       await generateCode(prompt);
       toast({
-        title: "Code généré",
-        description: "Votre code React a été créé avec succès!",
+        title: "✅ Code généré!",
+        description: "Scrollez vers le bas pour voir le résultat",
       });
+      
+      // Scroll vers le résultat après un petit délai
+      setTimeout(() => {
+        const resultElement = document.getElementById('generation-result');
+        if (resultElement) {
+          resultElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 500);
     } catch (error) {
       toast({
         title: "Erreur",
@@ -89,6 +97,7 @@ const AppCreator = () => {
 
             {generatedCode && (
               <motion.div
+                id="generation-result"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
