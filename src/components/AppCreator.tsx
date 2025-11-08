@@ -8,6 +8,8 @@ const AppCreator = () => {
   const [prompt, setPrompt] = useState('');
   const { isGenerating, generatedCode, generateCode } = useCodeGenerator();
 
+  console.log('AppCreator render - generatedCode:', generatedCode ? `${generatedCode.substring(0, 50)}...` : 'empty');
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!prompt.trim()) {
@@ -132,13 +134,14 @@ const AppCreator = () => {
                     </div>
                     <div className="p-4 h-[500px] overflow-auto bg-gray-50">
                       <iframe
+                        key={generatedCode}
                         srcDoc={`
                           <!DOCTYPE html>
                           <html>
                           <head>
                             <script src="https://cdn.tailwindcss.com"></script>
                             <style>
-                              body { margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+                              body { margin: 0; padding: 20px; font-family: system-ui, sans-serif; }
                             </style>
                           </head>
                           <body>
@@ -152,7 +155,8 @@ const AppCreator = () => {
                                 const root = ReactDOM.createRoot(document.getElementById('root'));
                                 root.render(React.createElement(Component));
                               } catch (error) {
-                                document.getElementById('root').innerHTML = '<div style="color: red; padding: 20px;"><strong>Erreur:</strong> ' + error.message + '</div>';
+                                document.getElementById('root').innerHTML = '<div style="color: red; padding: 20px; background: #fee; border: 2px solid red; border-radius: 8px; margin: 10px;"><strong>Erreur:</strong> ' + error.message + '</div>';
+                                console.error('Iframe error:', error);
                               }
                             </script>
                           </body>
